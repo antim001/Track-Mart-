@@ -5,14 +5,21 @@ import bodyParser from "body-parser";
 import mongoose from 'mongoose';
 dotenv.config();
 const app = express()
-const PORT = process.env.PORT || 5000
+const port = process.env.PORT||8000
 
-
-app.get('/', (req, res) => {
-  res.send('Tract mart in under construction')
-})
-
+//middleware
+app.use(express.json())
+app.use(express.urlencoded({extended:false}))
+app.use(bodyParser.json())
+app.use(cors());
+app.get("/", (req, res) => {
+    res.send("Track Mart is running!");
+  });
+  
+console.log(`server is running on ${port}`)
 mongoose
-  .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(process.env.MONGO_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch((error) => console.error('Error connecting to MongoDB:', error));
+  console.log("MONGO_URI:", process.env.MONGO_URI);
+  console.log("PORT:", process.env.PORT);
