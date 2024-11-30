@@ -4,10 +4,13 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import mongoose from 'mongoose';
 import userRoute from './routes/userRoute.js'
+import {errorHandler} from './middleWare/errorMiddleware.js'
 dotenv.config();
+
 const app = express()
 const port = process.env.PORT|| 8000
-
+//error middle ware
+app.use(errorHandler);
 //middleware
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
