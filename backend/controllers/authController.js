@@ -1,7 +1,10 @@
+// authController.js
+
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/userModel.js';
 
+// Login Function
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -32,7 +35,12 @@ export const login = async (req, res) => {
       user: { _id: user._id, name: user.name, role: user.role }
     });
   } catch (error) {
-    console.error("Error in login:", error); // Debugging
+    console.error("Error in login:", error);
     return res.status(500).json({ success: false, error: "Something went wrong. Please try again." });
   }
+};
+
+// Verify Function
+export const verify = (req, res) => {
+  return res.status(200).json({ success: true, user: req.user });
 };
