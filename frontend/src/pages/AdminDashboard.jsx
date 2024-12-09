@@ -3,6 +3,7 @@ import {useAuth} from '../context/authContext'
 import AdminSidebar from '../components/dashboard/AdminSidebar.jsx'
 import Navbar from '../components/Navbar.jsx'
 import AdminSummary from '../components/AdminSummary.jsx'
+import {Outlet} from 'react-router-dom'
 function AdminDashboard() {
   const {user,loading}=useAuth();
 
@@ -13,7 +14,7 @@ function AdminDashboard() {
     <AdminSidebar/>
     <div className='flex-1 ml-64 bg-gray-100 h-screen'>
     <Navbar/>
-    <AdminSummary/>
+    <Outlet/>
     </div>
     </div>
   )
