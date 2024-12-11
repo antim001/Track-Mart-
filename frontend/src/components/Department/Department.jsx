@@ -7,6 +7,12 @@ import axios from 'axios';
 function Department() {
   const [departments, setDepartments] = useState([]);
   const [depLoading, setDepLoading] = useState(false);
+  const [filterdDepartments, setFilterdDepartments] = useState([]);
+
+  const onDepartmentDelete = async (id) => {
+    const data = departments.filter((dep) => dep._id !== id);
+    setDepartments(data);
+  };
 
   useEffect(() => {
     const fetchDepartments = async () => {
@@ -24,9 +30,10 @@ function Department() {
             _id: dep._id,
             sno: sno++,
             dep_name: dep.dep_name,
-            action: <DepartmentButtons _id={dep._id} />,
+            action: <DepartmentButtons _id={dep._id} onDepartmentDelete={onDepartmentDelete} />,
           }));
           setDepartments(data);
+          setFilterdDepartments(data);
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
@@ -39,6 +46,13 @@ function Department() {
 
     fetchDepartments(); // Call the fetch function
   }, []); // Empty dependency array to run only once
+
+  const filterDepartments = (e) => {
+    const records = departments.filter((dep) =>
+      dep.dep_name.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setFilterdDepartments(records);
+  };
 
   return (
     <>
@@ -54,6 +68,7 @@ function Department() {
               type="text"
               placeholder="Search by department name"
               className="px-4 py-0.5 border"
+              onChange={filterDepartments}
             />
             <Link
               to="/admin-dashboard/add-department"
@@ -62,8 +77,8 @@ function Department() {
               Add New Department
             </Link>
           </div>
-          <div className='mt-5'>
-            <DataTable columns={columns} data={departments} />
+          <div className="mt-5">
+            <DataTable columns={columns} data={filterdDepartments} pagination />
           </div>
         </div>
       )}

@@ -73,5 +73,27 @@ const updateDepartment = async (req, res) => {
     return res.status(500).json({ success: false, error: "Edit department server error" });
   }
 };
+const deleteDepartment = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-export { addDepartment,getDepartment,getDepartments,updateDepartment };
+    // Check if the ID is valid
+    if (!id) {
+      return res.status(400).json({ success: false, error: "Invalid department ID" });
+    }
+
+    // Find and delete the department by ID
+    const deleteDep = await Department.findByIdAndDelete(id);
+
+    if (!deleteDep) {
+      return res.status(404).json({ success: false, error: "Department not found" });
+    }
+
+    return res.status(200).json({ success: true, message: "Department deleted successfully." });
+  } catch (error) {
+    console.error("Error in deleteDepartment:", error);
+    return res.status(500).json({ success: false, error: "Delete department server error." });
+  }
+};
+
+export { addDepartment,getDepartment,getDepartments,updateDepartment,deleteDepartment };
